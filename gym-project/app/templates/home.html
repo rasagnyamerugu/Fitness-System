@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+{% block title %}Gym Tracker — Home{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="/css/home.css" />{% endblock %}
+
+{% block content %}
+
+
+<div class="hero-card">
+    <h2>Welcome back, <span>{{ current_user.username }}</span>!</h2>
+    {% if streak > 0 %}
+    <p>You're on a <strong>{{ streak }}-day streak</strong>. Today: <strong>{{ workout.name }}</strong>. Keep it up.</p>
+    {% else %}
+    <p>Start your journey today! Log your first session and begin building your streak.</p>
+    {% endif %}
+    <a href="#todays-workout" class="btn btn-primary" style="margin-top:14px;">Start Today's Workout →</a>
+</div>
+
+
+<div class="section-heading">Daily Motivation</div>
+<div class="quote-card">
+    <div>
+        <div class="quote-text" id="quote-text">{{ quote.text }}</div>
+        <div class="quote-author" id="quote-author">— {{ quote.author }}</div>
+    </div>
+    <button class="btn btn-ghost" id="quote-refresh-btn">↻ New Quote</button>
+</div>
+
+
+<div class="section-heading">Session Log</div>
+<div class="session-log-grid">
+
+    <div class="bar-trigger {% if pre_submitted %}submitted{% endif %}" id="pre-workout-trigger">
+        <div>
+            <div class="bar-title">Pre-Workout Check-in</div>
+            <div class="bar-sub">{% if pre_submitted %}✓ Logged for today{% else %}Log energy, nutrition & goals{% endif
+                %}</div>
+        </div>
+        <span>{% if pre_submitted %}✓{% else %}›{% endif %}</span>
+    </div>
+
+    <div class="bar-trigger {% if post_submitted %}submitted{% endif %}" id="post-workout-trigger">
+        <div>
+            <div class="bar-title">Post-Workout Review</div>
+            <div class="bar-sub">{% if post_submitted %}✓ Session logged{% else %}Rate your session & log recovery{%
+                endif %}</div>
+        </div>
+        <span>{% if post_submitted %}✓{% else %}›{% endif %}</span>
+    </div>
+
+
+    <div class="metric-bar">
+        <div class="metric-bar-header">
+            <div>
+                <div class="bar-title">Water Intake</div>
+                <div class="bar-sub">Goal: 12 glasses</div>
+            </div>
+            <div class="metric-val"><span id="water-count">{{ water_today }}</span>/12</div>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="water-fill" style="width:{{ (water_today/12*100)|int }}%"></div>
+        </div>
+        <div class="water-glasses">
+            {% for i in range(1,13) %}
+            <button class="glass-btn {% if water_today >= i %}filled{% endif %}" data-glass="{{ i }}"></button>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="metric-bar">
+        <div class="metric-bar-header">
+            <div>
+                <div class="bar-title">Step Count</div>
+                <div class="bar-sub">Goal: 10,000 steps</div>
+            </div>
+            <div class="metric-val"><span id="steps-display">{{ steps_today|default(0) }}</span> steps</div>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill steps-fill" id="steps-fill"
+                style="width:{{ [((steps_today or 0)/10000*100)|int,100]|min }}%"></div>
+        </div>
+        <div class="steps-row">
+            <input type="number" id="steps-input" value="{{ steps_today or '' }}" placeholder="Enter steps" min="0"
+                max="99999" />
+            <button class="btn btn-ghost" id="steps-save-btn">Save</button>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="section-heading">Today's AI Feedback</div>
+<div class="feedback-bar {% if not session_feedback %}empty{% endif %}" id="feedback-bar">
+    <div class="feedback-label">GymTracker AI Coach</div>
+    <div class="feedback-text" id="feedback-text">
+        {% if session_feedback %}{{ session_feedback }}{% else %}Complete your post-workout review to get personalized
+        AI feedback.{% endif %}
+    </div>
+</div>
+
+
+<div class="section-heading" id="todays-workout">Today's Workout</div>
+<div class="workout-card">
+    <div class="workout-header">
+        <div>
+            <span class="workout-badge">Day {{ workout.day }} — {{ workout.focus }}</span>
+            <div class="workout-title">{{ workout.name }}</div>
+            {% if workout.exercises %}
+            <div class="workout-meta">{{ workout.exercises|length }} exercises · {{ workout.duration }}</div>
+            {% endif %}
+        </div>
+        {% if workout.exercises %}
+        <div class="ring-label" id="ring-label">0/{{ workout.exercises|length }}</div>
+        {% endif %}
+    </div>
+
+    {% if workout.exercises %}
+    <div class="exercise-list">
+        {% for ex in workout.exercises %}
+        {% set done_sets = completed_sets.get(ex.name, []) %}
+        <div class="exercise-row {% if done_sets|length == ex.sets %}done{% endif %}" data-exercise="{{ ex.name }}">
+            <div class="ex-check">{% if done_sets|length == ex.sets %}✓{% endif %}</div>
+            <div class="ex-info">
+                <div class="ex-name">{{ ex.name }}</div>
+                <div class="ex-meta">{{ ex.sets }} sets · {{ ex.reps }} reps · {{ ex.rest }}</div>
+            </div>
+            <div class="ex-sets">
+                {% for i in range(ex.sets) %}
+                <div class="set-dot {% if i in done_sets %}done{% endif %}" data-set-index="{{ i }}"></div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="rest-msg">Rest Day — Recovery is part of training. Hydrate, stretch, recharge.</div>
+    {% endif %}
+</div>
+
+
+<div class="section-heading">Your Progress</div>
+<div class="stats-grid">
+
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title">Consistency Score</div>
+        </div>
+        <div class="card-body">
+            <div class="score-row">
+                <div class="score-big" id="score-num" data-score="{{ consistency_score }}">0</div>
+                <div class="score-meta">
+                    <div class="cstat-row"><span>This Month</span><span>{{ sessions_this_month }} / 30</span></div>
+                    <div class="cstat-row"><span>Current Streak</span><span>{{ streak }} days</span></div>
+                    <div class="cstat-row"><span>Best Streak</span><span>{{ best_streak }} days</span></div>
+                    <div class="cstat-row"><span style="color:#ef4444">Missed Days</span><span style="color:#ef4444">{{
+                            missed_days }}</span></div>
+                </div>
+            </div>
+            <div class="cbar-label"><span>Monthly progress</span><span>{{ consistency_score }}%</span></div>
+            <div class="cbar-track">
+                <div class="cbar-fill" id="consistency-bar-fill" style="width:{{ consistency_score }}%"></div>
+            </div>
+            <div class="consistency-feedback" id="consistency-feedback-text">{{ consistency_feedback }}</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title">Weekly Report</div>
+        </div>
+        <div class="card-body">
+            <div class="weekly-grid">
+                {% for day in week_data %}
+                <div class="day-col">
+                    <div class="day-label">{{ day.label }}</div>
+                    <div class="day-bar-wrap">
+                        <div class="day-bar {{ day.status }}" style="height:{{ day.height }}%"></div>
+                    </div>
+                    <div class="day-dot {{ day.status }}"></div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="weekly-summary">
+                <div class="w-stat"><span class="w-val">{{ weekly_sessions }}</span><span class="w-lbl">Sessions</span>
+                </div>
+                <div class="w-stat"><span class="w-val">{{ weekly_duration_fmt }}</span><span class="w-lbl">Time</span>
+                </div>
+                <div class="w-stat"><span class="w-val">{{ weekly_calories }}</span><span class="w-lbl">Calories</span>
+                </div>
+                <div class="w-stat"><span class="w-val">{{ streak }}</span><span class="w-lbl">Streak</span></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal-overlay" id="pre-modal-overlay">
+    <div class="modal-box">
+        <button class="modal-close" data-close-modal="pre-modal-overlay">✕</button>
+        <div class="modal-title">Pre-Workout <span>Check-in</span></div>
+
+        {% if pre_submitted %}
+        <div class="already-logged">Pre-workout is submitted</div>
+        {% if daily_log %}
+        <div class="logged-summary">
+            <div class="log-row"><span>Type</span><span>{{ daily_log.pre_workout_type or '—' }}</span></div>
+            <div class="log-row"><span>Energy</span><span>{{ daily_log.pre_energy_level or '—' }}/10</span></div>
+            <div class="log-row"><span>Sleep</span><span>{{ daily_log.pre_sleep_hours or '—' }} hrs</span></div>
+            <div class="log-row"><span>Water</span><span>{{ daily_log.pre_water_intake or '—' }} glasses</span></div>
+            <div class="log-row"><span>Mood</span><span>{{ daily_log.pre_mood or '—' }}</span></div>
+        </div>
+        {% endif %}
+        {% else %}
+        <form id="pre-workout-form">
+            <div class="form-row">
+                <div class="form-group"><label class="field-label">Date</label><input type="date" name="date"
+                        value="{{ today }}" required /></div>
+                <div class="form-group"><label class="field-label">Time</label><input type="time" name="time" /></div>
+            </div>
+            <div class="form-group">
+                <label class="field-label">Workout Type</label>
+                <div class="select-wrap"><select name="workout_type">
+                        <option {% if workout.name=='Arms & Shoulders' %}selected{% endif %}>Arms & Shoulder</option>
+                        <option {% if workout.name=='Legs & Glutes' %}selected{% endif %}>Legs & Glutes</option>
+                        <option {% if workout.name=='Abs & Core' %}selected{% endif %}>Abs & Core</option>
+                        <option {% if workout.name=='Cardio & HIIT' %}selected{% endif %}>Cardio, HIIT</option>
+                        <option>Full Body</option>
+                        <option {% if 'Rest' in workout.name %}selected{% endif %}>Rest Day</option>
+                    </select></div>
+            </div>
+            <div class="range-group">
+                <div class="range-header"><label class="field-label">Energy Level</label><span id="energy-val">5</span>
+                </div>
+                <input type="range" name="energy_level" min="1" max="10" value="5" data-val-target="energy-val" />
+            </div>
+            <div class="range-group">
+                <div class="range-header"><label class="field-label">Sleep (hrs)</label><span id="sleep-val">7</span>
+                </div>
+                <input type="range" name="sleep_hours" min="3" max="10" value="7" data-val-target="sleep-val" />
+            </div>
+            <div class="range-group">
+                <div class="range-header"><label class="field-label">Water so far (glasses)</label><span
+                        id="water-val">5</span></div>
+                <input type="range" name="water_intake" min="0" max="12" value="5" data-val-target="water-val" />
+            </div>
+            <div class="form-group">
+                <label class="field-label">Mood</label>
+                <div class="select-wrap"><select name="mood" required>
+                        <option value="">Select mood</option>
+                        <option value="energetic">Energetic</option>
+                        <option value="tired">Tired</option>
+                        <option value="stressed">Stressed</option>
+                        <option value="happy">Happy</option>
+                        <option value="neutral">Neutral</option>
+                    </select></div>
+            </div>
+            <div class="form-group">
+                <label class="field-label">Injuries / Notes</label>
+                <textarea name="notes" placeholder="Any soreness or injuries…"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%">Save Check-in</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+
+<div class="modal-overlay" id="post-modal-overlay">
+    <div class="modal-box">
+        <button class="modal-close" data-close-modal="post-modal-overlay">✕</button>
+        <div class="modal-title">Post-Workout <span>Review</span></div>
+
+        {% if post_submitted %}
+        <div class="already-logged">post workout review submmited</div>
+        {% if daily_log %}
+        <div class="logged-summary">
+            <div class="log-row"><span>Duration</span><span>{{ daily_log.post_duration or '—' }} min</span></div>
+            <div class="log-row"><span>Calories</span><span>{{ daily_log.post_calories or '—' }}</span></div>
+            <div class="log-row"><span>Rating</span><span>{{ daily_log.post_rating or '—' }}/10</span></div>
+            <div class="log-row"><span>Fatigue</span><span>{{ daily_log.post_fatigue or '—' }}/10</span></div>
+            <div class="log-row"><span>Completion</span><span>{{ daily_log.post_completion or '—' }}</span></div>
+        </div>
+        {% endif %}
+        {% else %}
+        <form id="post-workout-form">
+            <div class="form-row">
+                <div class="form-group"><label class="field-label">Duration (min)</label><input type="number"
+                        name="duration" min="5" max="240" placeholder="55" /></div>
+                <div class="form-group"><label class="field-label">Calories Burned</label><input type="number"
+                        name="calories" min="50" max="2000" placeholder="400" /></div>
+            </div>
+            <div class="range-group">
+                <div class="range-header"><label class="field-label">Session Rating</label><span
+                        id="rating-val">7</span></div>
+                <input type="range" name="rating" min="1" max="10" value="7" data-val-target="rating-val" />
+            </div>
+            <div class="range-group">
+                <div class="range-header"><label class="field-label">Fatigue Level</label><span
+                        id="fatigue-val">5</span></div>
+                <input type="range" name="fatigue" min="1" max="10" value="5" data-val-target="fatigue-val" />
+            </div>
+            <div class="form-group">
+                <label class="field-label">Completion</label>
+                <div class="select-wrap"><select name="completion">
+                        <option>All exercises completed ✓</option>
+                        <option>Skipped 1–2 exercises</option>
+                        <option>Partial session</option>
+                        <option>Just a warmup</option>
+                    </select></div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%">Log Session</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script src="/js/home.js"></script>{% endblock %}

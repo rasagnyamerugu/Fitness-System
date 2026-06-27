@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Gym Tracker — Nutrition{% endblock %}
+{% block sb_nutrition %}active{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nutrition.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="hero-card">
+    <div class="hero-text">
+        <h2>Meal Plan <span>Predictor</span></h2>
+        <p>Fill in your details and get a personalised meal &amp; exercise recommendation from our trained AI model,
+            with a detailed explanation from GymTracker AI Coach.</p>
+    </div>
+</div>
+
+<div class="section-heading">Your Details</div>
+
+<div class="nutrition-form-card" id="form-card">
+
+    <div class="form-group">
+        <label class="form-label">Gender</label>
+        <div class="select-wrap">
+            <select id="inp-gender">
+                <option value="">Select gender</option>
+                {% for g in genders %}
+                <option value="{{ g }}" {% if g|lower==user_gender|lower %}selected{% endif %}>{{ g }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Primary Goal</label>
+        <div class="select-wrap">
+            <select id="inp-goal">
+                <option value="">Select goal</option>
+                {% for g in goals %}
+                <option value="{{ g }}" {% if g==user_goal %}selected{% endif %}>
+                    {{ g | replace('_', ' ') | title }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">BMI Category</label>
+        {% if bmi_category %}
+        <div class="bmi-tag">Calculated from profile: {{ bmi_category }}</div>
+        {% endif %}
+        <div class="select-wrap">
+            <select id="inp-bmi">
+                <option value="">Select BMI category</option>
+                {% for b in bmi_categories %}
+                <option value="{{ b }}" {% if b==bmi_category %}selected{% endif %}>{{ b }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Exercise Schedule</label>
+        <div class="select-wrap">
+            <select id="inp-exercise">
+                <option value="">Select exercise schedule</option>
+                {% for e in exercise_schedules %}
+                <option value="{{ e }}">{{ e }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div id="pred-error" class="pred-error"></div>
+
+    <button id="pred-btn" class="btn-primary">Get My Meal Plan</button>
+</div>
+
+<div id="results-wrap" style="display:none;">
+
+    <div class="section-heading">Recommended Plan</div>
+    <div class="result-block">
+        <div class="ml-result-card">
+            <div class="result-block-title">ml model Recommendation</div>
+            <div class="ml-plan-text" id="ml-meal-text"></div>
+            <div class="ml-exercise-label">Suggested Exercise Schedule</div>
+            <div class="ml-exercise-text" id="ml-exercise-text"></div>
+            <div class="input-summary">
+                <div class="input-chip">Gender <span id="chip-gender"></span></div>
+                <div class="input-chip">Goal <span id="chip-goal"></span></div>
+                <div class="input-chip">BMI <span id="chip-bmi"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-heading">ai feedback</div>
+    <div class="result-block">
+        <div class="ai-explain-card">
+            <div class="result-block-title">GymTracker AI Coach</div>
+            <div class="ai-explain-text" id="ai-explain-text"></div>
+        </div>
+        <button class="btn-reset" id="pred-reset-btn">Try Different Inputs</button>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/nutrition.js') }}"></script>
+{% endblock %}

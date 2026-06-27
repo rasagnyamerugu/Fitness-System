@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Gym Tracker — Arms & Shoulders{% endblock %}
+{% block sb_arms %}active{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div id="progressBar"></div>
+
+<div class="blog-content">
+    <h1>Arms & Shoulders</h1>
+    <p>Build strong, defined arms and boulder shoulders with these essential exercises. Whether you're training for
+        size, strength, or endurance, this guide covers everything you need.</p>
+
+    <hr>
+
+    <h2>1. Barbell Bicep Curl</h2>
+    <p>The barbell curl is a classic mass-builder for the biceps. Stand with feet shoulder-width apart, grip the barbell
+        with an underhand grip, and curl it up to shoulder height while keeping your elbows pinned to your sides. Slowly
+        lower it back down. Aim for 3–4 sets of 8–12 reps.</p>
+    <p><strong>Muscles worked:</strong> Biceps brachii, Brachialis</p>
+    <div class="yt-thumb" data-vid="kwG2ipFRgfo">
+        <img src="https://img.youtube.com/vi/kwG2ipFRgfo/hqdefault.jpg" alt="Barbell Bicep Curl Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>2. Tricep Dips</h2>
+    <p>Tricep dips effectively target the back of the upper arm. Using parallel bars or a bench, lower your body by
+        bending the elbows to about 90 degrees, then push back up. Keep your torso upright for more tricep activation.
+        Perform 3 sets of 10–15 reps.</p>
+    <p><strong>Muscles worked:</strong> Triceps brachii, Anterior deltoid, Pectorals</p>
+    <div class="yt-thumb" data-vid="0326dy_-CzM">
+        <img src="https://img.youtube.com/vi/0326dy_-CzM/hqdefault.jpg" alt="Tricep Dips Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>3. Overhead Shoulder Press</h2>
+    <p>The overhead press is a fundamental compound movement for building shoulder size and strength. Press a barbell or
+        dumbbells from shoulder height straight overhead until your arms are fully extended. Lower back down in a
+        controlled manner. Do 3–4 sets of 6–10 reps.</p>
+    <p><strong>Muscles worked:</strong> Anterior deltoid, Lateral deltoid, Trapezius, Triceps</p>
+    <div class="yt-thumb" data-vid="2yjwXTZQDDI">
+        <img src="https://img.youtube.com/vi/2yjwXTZQDDI/hqdefault.jpg" alt="Overhead Shoulder Press Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>4. Lateral Raises</h2>
+    <p>Lateral raises isolate the side (lateral) head of the deltoid, giving your shoulders that wide, capped look. Hold
+        a dumbbell in each hand, and raise both arms out to the sides until they're at shoulder height. Lower slowly.
+        Perform 3 sets of 12–15 reps with light to moderate weight.</p>
+    <p><strong>Muscles worked:</strong> Lateral deltoid, Supraspinatus</p>
+    <div class="yt-thumb" data-vid="3VcKaXpzqRo">
+        <img src="https://img.youtube.com/vi/3VcKaXpzqRo/hqdefault.jpg" alt="Lateral Raises Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>5. Hammer Curls</h2>
+    <p>Hammer curls target the brachialis and brachioradialis, adding thickness to the arm. Hold dumbbells with a
+        neutral (palms-facing-in) grip and curl them up alternately or simultaneously. This also helps build forearm
+        strength. Do 3 sets of 10–12 reps per arm.</p>
+    <p><strong>Muscles worked:</strong> Brachialis, Brachioradialis, Biceps brachii</p>
+    <div class="yt-thumb" data-vid="TwD-YGVP4Bk">
+        <img src="https://img.youtube.com/vi/TwD-YGVP4Bk/hqdefault.jpg" alt="Hammer Curls Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>Tips for Arms & Shoulders Training</h2>
+    <ul>
+        <li>Always warm up your shoulder joints before heavy pressing movements.</li>
+        <li>Don't neglect the rear deltoids — include face pulls or reverse flyes.</li>
+        <li>Use a full range of motion on curls for maximum bicep activation.</li>
+        <li>Keep ego in check on lateral raises — lighter weight with strict form beats heavy and sloppy.</li>
+        <li>Train arms 2x per week for optimal muscle growth.</li>
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/blog.js') }}"></script>
+{% endblock %}

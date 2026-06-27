@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Gym Tracker — Cardio & HIIT{% endblock %}
+{% block sb_cardio %}active{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div id="progressBar"></div>
+
+<div class="blog-content">
+    <h1>Cardio & HIIT</h1>
+    <p>Cardiovascular training and High-Intensity Interval Training (HIIT) are powerful tools for burning fat, improving
+        endurance, and boosting heart health. Whether you prefer steady-state cardio or explosive intervals, this guide
+        has you covered.</p>
+
+    <hr>
+
+    <h2>1. Jump Rope (Skipping)</h2>
+    <p>Jumping rope is one of the most efficient and accessible cardio exercises available. It burns a high number of
+        calories per minute while also improving coordination and footwork. Start with 3 rounds of 2–3 minutes with 60
+        seconds rest between rounds. Gradually build up your time as your fitness improves.</p>
+    <p><strong>Benefits:</strong> High calorie burn, coordination, calf and shoulder endurance</p>
+    <div class="yt-thumb" data-vid="FJmRQ5iTXKE">
+        <img src="https://img.youtube.com/vi/FJmRQ5iTXKE/hqdefault.jpg" alt="Jump Rope Workout Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>2. Burpees</h2>
+    <p>Burpees are a full-body HIIT staple that combine a squat, push-up, and jump into one explosive movement. From
+        standing, drop into a squat, kick your feet back into a push-up position, perform a push-up, jump your feet
+        forward, then leap into the air with your arms overhead. Perform 4 rounds of 10–15 reps with 30 seconds rest.
+    </p>
+    <p><strong>Benefits:</strong> Full-body conditioning, fat burning, cardiovascular endurance</p>
+    <div class="yt-thumb" data-vid="dZgVxmf6jkA">
+        <img src="https://img.youtube.com/vi/dZgVxmf6jkA/hqdefault.jpg" alt="Burpees Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>3. Sprint Intervals</h2>
+    <p>Sprint intervals are one of the most effective methods for burning fat and building explosive speed. On a
+        treadmill or outdoors, sprint at maximum effort for 20–30 seconds, then walk or slow jog for 60–90 seconds to
+        recover. Repeat for 6–10 rounds. This style of training elevates your metabolism for hours after the session.
+    </p>
+    <p><strong>Benefits:</strong> Fat loss, VO2 max improvement, speed and power development</p>
+    <div class="yt-thumb" data-vid="Ky_1tRwadCs">
+        <img src="https://img.youtube.com/vi/Ky_1tRwadCs/hqdefault.jpg" alt="Sprint Intervals Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>4. Cycling (Stationary Bike)</h2>
+    <p>Stationary cycling is a low-impact cardio option that's easy on the joints. Use it for steady-state cardio (30–60
+        minutes at moderate effort) or interval training (alternate between high resistance sprints and easy recovery
+        pedaling). It's particularly useful for active recovery days or when your legs are sore from heavy training.</p>
+    <p><strong>Benefits:</strong> Low-impact cardio, leg endurance, active recovery</p>
+    <div class="yt-thumb" data-vid="jhPqTyejY_0">
+        <img src="https://img.youtube.com/vi/jhPqTyejY_0/hqdefault.jpg" alt="Stationary Bike HIIT Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>5. Mountain Climbers</h2>
+    <p>Mountain climbers are a dynamic core and cardio exercise performed in a push-up position. Drive one knee toward
+        your chest, then quickly switch legs in a running motion while keeping your hips level and core tight. Perform
+        for time: 4 rounds of 30–45 seconds with 20 seconds rest. The faster you go, the higher your heart rate climbs.
+    </p>
+    <p><strong>Benefits:</strong> Core strength, cardiovascular conditioning, full-body engagement</p>
+    <div class="yt-thumb" data-vid="nmwgirgXLYM">
+        <img src="https://img.youtube.com/vi/nmwgirgXLYM/hqdefault.jpg" alt="Mountain Climbers Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>Tips for Cardio & HIIT Training</h2>
+    <ul>
+        <li>Don't do intense HIIT every day — 2–3 sessions per week with rest or steady cardio in between is optimal.
+        </li>
+        <li>Always warm up for 5 minutes with light movement before starting high-intensity work.</li>
+        <li>Stay hydrated — HIIT causes significant sweat loss.</li>
+        <li>Track your heart rate to make sure you're working in the right zone (80–95% max HR for HIIT intervals).</li>
+        <li>Combine HIIT with strength training for the best body composition results.</li>
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/blog.js') }}"></script>
+{% endblock %}

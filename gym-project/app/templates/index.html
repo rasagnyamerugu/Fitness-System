@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GymTracker</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/css/landing.css" />
+</head>
+
+<body>
+
+    <nav>
+        <span class="logo">Gym<span>Tracker</span></span>
+        <div class="nav-links">
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('signup') }}" class="btn-nav">Sign Up</a>
+        </div>
+    </nav>
+    <section class="features">
+        <h2>Features</h2>
+        <div class="grid">
+            <div class="feat"><strong>Authentication system</strong>
+                <p>Authentication system with secure password hashing using bcrypt library</p>
+            </div>
+            <div class="feat"><strong>Workout Tracker</strong>
+                <p>tracks the streak and workout log sets</p>
+            </div>
+            <div class="feat"><strong>progress dashboard & Consistency Score</strong>
+                <p>record all the data of user and give the Consistency score based on no of days login and streak etc
+                </p>
+            </div>
+            <div class="feat"><strong>pre-Workout Review and post-workout review </strong>
+                <p>user can give post and pre workout data to the system</p>
+            </div>
+            <div class="feat"><strong>Ai feedback</strong>
+                <p>llm gives feedback to the user based on the user data collected form the pre and
+                    post workout form</p>
+            </div>
+            <div class="feat"><strong>AI chatbot</strong>
+                <p>page aware llm chatbot that can unteract and give answer to the users questions
+                    related to that page</p>
+            </div>
+            <div class="feat"><strong>BMI Calculator</strong>
+                <p>in profile page system automatically calculate and display the bmi from the user
+                    data</p>
+            </div>
+            <div class="feat"><strong>Meal Plan Predictor</strong>
+                <p>the machine learning model predicts the meal plan using the user data like Gender ,
+                    goal,bmi
+                    ,exercise schedule</p>
+            </div>
+            <div class="feat"><strong>Blog Articles</strong>
+                <p>articles with photos and videos related to the exercise set so that user can
+                    understand how to do and why do the exercise set properly</p>
+            </div>
+            <div class="feat"><strong>Daily Quote</strong>
+                <p>daily quote is displayed in homw page to motivate the users</p>
+            </div>
+            <div class="feat"><strong>user profile</strong>
+                <p>user can update and delete the data related to the user such as goal , weight ,
+                    height etc</p>
+            </div>
+            <div class="feat"><strong>account deletion and creations</strong>
+                <p>no two user can have same username and if user wants to delete the account user can
+                    delete there account from the profile page</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-inner">
+
+            <div>
+                <strong>Account</strong>
+                <a href="{{ url_for('signup') }}">Sign Up</a>
+                <a href="{{ url_for('login') }}">Log In</a>
+            </div>
+            <div class="team">
+                <span>Team:</span>
+                <span>Koushik (24211A05W8)</span>
+                <span>Abhinay (24211A05X6)</span>
+                <span>Rasagnya (2521A0532)</span>
+                <span>Kuruma Rakesh (24211A05X2)</span>
+            </div>
+    </footer>
+
+</body>
+
+</html>

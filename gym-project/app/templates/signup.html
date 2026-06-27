@@ -1,0 +1,48 @@
+{% extends "base1.html" %}
+{% block title %}Sign Up{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="gym-wrapper">
+
+
+    <div class="gym-right">
+        <div class="gym-form-wrap">
+
+            <h1 class="gym-form-title">SIGN UP</h1>
+
+            {% if alert %}
+            <div class="alert">Username is already taken, choose another username</div>
+            {% endif %}
+
+            <form action="{{ url_for('signup') }}" method="POST">
+                <div class="field-group">
+                    <label class="field-label">Full Name</label>
+                    <input type="text" name="name" class="field-input" placeholder="">
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Username</label>
+                    <input type="text" name="username" class="field-input" placeholder="">
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Email</label>
+                    <input type="email" name="email" class="field-input" placeholder="">
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Password</label>
+                    <input type="password" name="password" class="field-input" placeholder="">
+                </div>
+                <button class="btn-submit" type="submit">CREATE ACCOUNT</button>
+                <p class="gym-footer">
+                    Already have an account? <a href="{{ url_for('login') }}">Login</a>
+                </p>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

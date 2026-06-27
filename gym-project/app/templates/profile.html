@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+{% block title %}Gym Tracker — Profile{% endblock %}
+{% block sb_profile %}active{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="/css/profile.css" />
+{% endblock %}
+
+{% block content %}
+{% set p = current_user.personal %}
+
+<div class="page-header">
+    <h1>My Profile</h1>
+    <p>Manage your personal info and fitness data</p>
+</div>
+
+
+<div class="profile-hero">
+    <div class="avatar-circle" id="profileAvatar">{{ current_user.name[0]|upper if current_user.name else '?' }}</div>
+    <div class="profile-info">
+        <div class="profile-name" id="heroName">{{ current_user.name }}</div>
+        <div class="profile-tags">
+            {% if p and p.age %}
+            <span class="tag" id="heroAge">{{ p.age }} yrs</span>
+            {% else %}
+            <span class="tag" id="heroAge" style="display:none"></span>
+            {% endif %}
+            {% if p and p.level %}<span class="tag accent">{{ p.level|capitalize }}</span>{% endif %}
+            {% if p and p.going_to_gym %}<span class="tag">{{ 'At Gym' if p.going_to_gym|lower == 'yes' else 'Home Training'
+                }}</span>{% endif %}
+        </div>
+        <div class="profile-username">@{{ current_user.username }}</div>
+        <div class="profile-stats">
+            {% if p and p.weight %}
+            <div class="pstat"><strong id="heroWeight">{{ p.weight }}</strong><span>kg</span></div>
+            {% endif %}
+            {% if p and p.height %}
+            <div class="pstat"><strong id="heroHeight">{{ p.height }}</strong><span>cm</span></div>
+            {% endif %}
+            {% if p and p.goal_weight %}
+            <div class="pstat"><strong id="heroGoalW">{{ p.goal_weight }}</strong><span>kg goal</span></div>
+            {% endif %}
+            {% if p and p.weight and p.height %}
+            <div class="pstat"><strong id="heroBMI">—</strong><span>BMI</span></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<div class="profile-grid">
+
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title">Personal Info</div>
+            <div class="card-sub">Name, age, contact</div>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label class="field-label">Name *</label>
+                <input type="text" id="firstName" value="{{ current_user.name or '' }}" oninput="liveUpdate()" />
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="field-label">Age *</label>
+                    <div class="input-unit-wrap">
+                        <input type="number" id="age" value="{{ p.age if p and p.age is not none else '' }}" min="10"
+                            max="100" oninput="liveUpdate()" placeholder="—" />
+                        <span class="input-unit">yrs</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Gender</label>
+                    <div class="select-wrap">
+                        <select id="gender" onchange="calcMetrics()">
+                            <option value="male" {% if p and p.gender=='male' %}selected{% endif %}>Male</option>
+                            <option value="female" {% if p and p.gender=='female' %}selected{% endif %}>Female</option>
+                            <option value="other" {% if p and p.gender=='other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="field-label">Email</label>
+                <input type="email" id="email" value="{{ current_user.email or '' }}" />
+            </div>
+            <div class="form-group">
+                <label class="field-label">Phone</label>
+                <input type="text" id="phone" value="{{ p.phone if p and p.phone else '' }}" placeholder="—" />
+            </div>
+            <div class="form-group">
+                <label class="field-label">Date of Birth</label>
+                <input type="date" id="dob" value="{{ p.dob if p and p.dob else '' }}" />
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title">Body Stats</div>
+            <div class="card-sub">Weight, height, targets</div>
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="field-label">Weight *</label>
+                    <div class="input-unit-wrap">
+                        <input type="number" id="weight" value="{{ p.weight if p and p.weight is not none else '' }}"
+                            min="30" max="300" oninput="liveUpdate()" placeholder="—" />
+                        <span class="input-unit">kg</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Goal Weight *</label>
+                    <div class="input-unit-wrap">
+                        <input type="number" id="goalWeight"
+                            value="{{ p.goal_weight if p and p.goal_weight is not none else '' }}" min="30" max="300"
+                            oninput="liveUpdate()" placeholder="—" />
+                        <span class="input-unit">kg</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="field-label">Height: <span id="heightVal">{{ p.height if p and p.height is not none else
+                        170 }}</span> cm</label>
+                <input type="range" id="heightRange" min="120" max="220"
+                    value="{{ p.height if p and p.height is not none else 170 }}" oninput="onHeightRange()" />
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="field-label">Waist (cm)</label>
+                    <div class="input-unit-wrap">
+                        <input type="number" id="waist" value="{{ p.waist if p and p.waist is not none else '' }}"
+                            min="40" max="200" placeholder="—" />
+                        <span class="input-unit">cm</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Body Fat %</label>
+                    <div class="input-unit-wrap">
+                        <input type="number" id="bodyFat"
+                            value="{{ p.body_fat if p and p.body_fat is not none else '' }}" min="3" max="60"
+                            placeholder="—" />
+                        <span class="input-unit">%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="profile-grid three-col">
+
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title">Fitness Level</div>
+        </div>
+        <div class="card-body">
+            <div class="level-cards" id="levelCards">
+                <div class="level-card" data-level="beginner" onclick="selectLevel(this)">
+                    <div class="level-check"></div><strong>Beginner</strong>
+                    <div>0–1 years</div>
+                </div>
+                <div class="level-card" data-level="intermediate" onclick="selectLevel(this)">
+                    <div class="level-check"></div><strong>Intermediate</strong>
+                    <div>1–3 years</div>
+                </div>
+                <div class="level-card" data-level="advanced" onclick="selectLevel(this)">
+                    <div class="level-check"></div><strong>Advanced</strong>
+                    <div>3+ years</div>
+                </div>
+            </div>
+            <input type="hidden" id="levelSelect" value="{{ p.level if p and p.level else 'beginner' }}" />
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title">Primary Goal</div>
+        </div>
+        <div class="card-body">
+            <div class="goal-options" id="goalOptions">
+                <div class="goal-option" data-goal="lose" onclick="selectGoal(this)">
+                    <div class="goal-radio">
+                        <div class="goal-dot"></div>
+                    </div>
+                    <div><strong>Lose Weight</strong>
+                        <div>Burn fat, lean out</div>
+                    </div>
+                </div>
+                <div class="goal-option" data-goal="muscle" onclick="selectGoal(this)">
+                    <div class="goal-radio">
+                        <div class="goal-dot"></div>
+                    </div>
+                    <div><strong>Build Muscle</strong>
+                        <div>Strength & hypertrophy</div>
+                    </div>
+                </div>
+                <div class="goal-option" data-goal="endurance" onclick="selectGoal(this)">
+                    <div class="goal-radio">
+                        <div class="goal-dot"></div>
+                    </div>
+                    <div><strong>Improve Endurance</strong>
+                        <div>Cardio & stamina</div>
+                    </div>
+                </div>
+                <div class="goal-option" data-goal="maintain" onclick="selectGoal(this)">
+                    <div class="goal-radio">
+                        <div class="goal-dot"></div>
+                    </div>
+                    <div><strong>Maintain & Tone</strong>
+                        <div>Stay fit</div>
+                    </div>
+                </div>
+                <div class="goal-option" data-goal="sport" onclick="selectGoal(this)">
+                    <div class="goal-radio">
+                        <div class="goal-dot"></div>
+                    </div>
+                    <div><strong>Sport Performance</strong>
+                        <div>Athletic training</div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="goalSelect" value="{{ p.goal if p and p.goal else '' }}" />
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-head">
+            <div class="card-title">Health Metrics</div>
+            <div class="card-sub">Auto-calculated</div>
+        </div>
+        <div class="card-body">
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-label">BMI</div>
+                    <div class="metric-val" id="hmBMI">—</div>
+                    <div class="metric-sub" id="hmBMIStatus">—</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">BMR</div>
+                    <div class="metric-val" id="hmBMR">—</div>
+                    <div class="metric-sub">kcal/day</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">To Goal</div>
+                    <div class="metric-val" id="hmToLose">—</div>
+                    <div class="metric-sub" id="hmToLoseEst">—</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">TDEE</div>
+                    <div class="metric-val" id="hmTDEE">—</div>
+                    <div class="metric-sub">kcal active</div>
+                </div>
+            </div>
+            <div class="form-row" style="margin-top:12px">
+                <div class="form-group">
+                    <label class="field-label">Heart Rate</label>
+                    <div class="input-unit-wrap">
+                        <input type="number" id="heartRate"
+                            value="{{ p.heart_rate if p and p.heart_rate is not none else '' }}" min="30" max="120"
+                            placeholder="—" oninput="markUnsaved()" />
+                        <span class="input-unit">bpm</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Activity Level</label>
+                    {% set al = p.activity_level if p and p.activity_level is not none else 1.55 %}
+                    <div class="select-wrap">
+                        <select id="activityLevel" onchange="calcMetrics()">
+                            <option value="1.2" {% if al|float==1.2 %}selected{% endif %}>Sedentary</option>
+                            <option value="1.375" {% if al|float==1.375 %}selected{% endif %}>Light (1-3/wk)</option>
+                            <option value="1.55" {% if al|float==1.55 %}selected{% endif %}>Moderate (3-5/wk)</option>
+                            <option value="1.725" {% if al|float==1.725 %}selected{% endif %}>Very Active</option>
+                            <option value="1.9" {% if al|float==1.9 %}selected{% endif %}>Super Active</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="card" style="margin-bottom:20px">
+    <div class="card-head">
+        <div class="card-title">Gym & Schedule</div>
+    </div>
+    <div class="card-body" style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
+        <div>
+            <label class="field-label" style="margin-bottom:8px">Going to gym?</label>
+            <div class="toggle-group" id="gymToggle">
+                <button class="toggle-btn" data-val="yes" onclick="setGymToggle('yes')">Yes</button>
+                <button class="toggle-btn" data-val="no" onclick="setGymToggle('no')">No</button>
+            </div>
+        </div>
+        <div class="form-group" style="min-width:160px;margin-bottom:0">
+            <label class="field-label">Session Length</label>
+            <div class="select-wrap">
+                <select id="sessionLen" onchange="scheduleSave()">
+                    {% set sl = p.session_len if p and p.session_len else '' %}
+                    <option value="30 min" {% if sl=='30 min' %}selected{% endif %}>30 min</option>
+                    <option value="45 min" {% if sl=='45 min' %}selected{% endif %}>45 min</option>
+                    <option value="60 min" {% if sl=='60 min' or not sl %}selected{% endif %}>60 min</option>
+                    <option value="75 min" {% if sl=='75 min' %}selected{% endif %}>75 min</option>
+                    <option value="90 min" {% if sl=='90 min' %}selected{% endif %}>90 min</option>
+                    <option value="120 min+" {% if sl=='120 min+' %}selected{% endif %}>120 min+</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="display:flex;gap:10px;margin-bottom:20px">
+    <button class="btn btn-primary" id="saveBtn">Save Changes</button>
+    <button class="btn btn-ghost" id="cancelBtn">Discard</button>
+</div>
+
+
+<div class="card danger-card" style="margin-bottom:20px">
+    <div class="card-body">
+        <div class="danger-row">
+            <div><strong>Reset All Progress</strong>
+                <div class="card-sub">Clears logs, streaks, and stats. Cannot be undone.</div>
+            </div>
+            <button class="btn btn-danger" id="resetProgressBtn">Reset Progress</button>
+        </div>
+        <div class="danger-row">
+            <div><strong>Delete Account</strong>
+                <div class="card-sub">Permanently deletes your account and all data.</div>
+            </div>
+            <button class="btn btn-danger" id="deleteAccountBtn">Delete Account</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    window.PROFILE_DB = {
+        level: {{ ('"' ~p.level ~ '"') if p and p.level else 'null' }},
+        going_to_gym: {{ ('"' ~ p.going_to_gym ~ '"') if p and p.going_to_gym else 'null' }},
+        goal: {{ ('"' ~ p.goal ~ '"') if p and p.goal else 'null' }}
+    };
+</script>
+<script src="/js/profile.js"></script>
+{% endblock %}

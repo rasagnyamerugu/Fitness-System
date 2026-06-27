@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Gym Tracker — Abs & Core{% endblock %}
+{% block sb_abs %}active{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div id="progressBar"></div>
+
+<div class="blog-content">
+    <h1>Abs & Core</h1>
+    <p>A strong core is not just about aesthetics — it's essential for posture, injury prevention, and overall athletic
+        performance. These exercises target your entire core, from the rectus abdominis to the deep stabilizing muscles.
+    </p>
+
+    <hr>
+
+    <h2>1. Plank</h2>
+    <p>The plank is a foundational isometric core exercise. Get into a push-up position and hold with your forearms on
+        the ground, body forming a straight line from head to heels. Brace your core and squeeze your glutes. Start with
+        3 holds of 30–60 seconds and work your way up over time.</p>
+    <p><strong>Muscles worked:</strong> Transverse abdominis, Rectus abdominis, Obliques, Glutes, Shoulder stabilizers
+    </p>
+    <div class="yt-thumb" data-vid="pSHjTRCQxIw">
+        <img src="https://img.youtube.com/vi/pSHjTRCQxIw/hqdefault.jpg" alt="Plank Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>2. Cable Crunch</h2>
+    <p>The cable crunch is one of the best-loaded exercises for the rectus abdominis. Kneel in front of a cable machine,
+        hold the rope attachment behind your head, and crunch downward by flexing your spine — not just pulling with
+        your arms. Squeeze your abs at the bottom. Do 3–4 sets of 12–15 reps.</p>
+    <p><strong>Muscles worked:</strong> Rectus abdominis, Obliques</p>
+    <div class="yt-thumb" data-vid="2fbujeH3F0E">
+        <img src="https://img.youtube.com/vi/2fbujeH3F0E/hqdefault.jpg" alt="Cable Crunch Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>3. Hanging Leg Raises</h2>
+    <p>Hanging leg raises are excellent for targeting the lower abs and hip flexors. Hang from a pull-up bar and raise
+        your legs until they are parallel to the floor (or higher for more challenge). Lower them slowly without
+        swinging. Perform 3 sets of 10–15 reps. Bend your knees if straight legs are too difficult at first.</p>
+    <p><strong>Muscles worked:</strong> Lower rectus abdominis, Hip flexors, Obliques</p>
+    <div class="yt-thumb" data-vid="Pr1ieGZ5atk">
+        <img src="https://img.youtube.com/vi/Pr1ieGZ5atk/hqdefault.jpg" alt="Hanging Leg Raises Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>4. Russian Twists</h2>
+    <p>Russian twists develop rotational strength in the obliques. Sit on the floor, lean back slightly, and lift your
+        feet off the ground. Rotate your torso from side to side, touching the floor (or a weight) next to each hip. For
+        added difficulty, hold a plate or medicine ball. Do 3 sets of 20 total reps (10 per side).</p>
+    <p><strong>Muscles worked:</strong> Obliques, Rectus abdominis, Hip flexors</p>
+    <div class="yt-thumb" data-vid="wkD8rjkodUI">
+        <img src="https://img.youtube.com/vi/wkD8rjkodUI/hqdefault.jpg" alt="Russian Twists Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>5. Ab Wheel Rollout</h2>
+    <p>The ab wheel rollout is one of the most challenging core exercises. Kneel on the floor, hold the ab wheel with
+        both hands, and slowly roll forward as far as you can while keeping your core tight and back flat. Pull back
+        using your core to return. Start with short range rollouts and progress over time. Aim for 3 sets of 8–10 reps.
+    </p>
+    <p><strong>Muscles worked:</strong> Rectus abdominis, Transverse abdominis, Lats, Shoulder stabilizers</p>
+    <div class="yt-thumb" data-vid="rqiTPdK1c_I">
+        <img src="https://i.ytimg.com/vi/rqiTPdK1c_I/hq720.jpg" alt="Ab Wheel Rollout Tutorial">
+        <button class="yt-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+            </svg>
+        </button>
+    </div>
+
+    <hr>
+
+    <h2>Tips for Abs & Core Training</h2>
+    <ul>
+        <li>Abs are made in the kitchen — diet and low body fat are key to visible abs.</li>
+        <li>Train your core 3–4 times per week; it recovers faster than most muscle groups.</li>
+        <li>Include both flexion exercises (crunches) and anti-flexion/stability exercises (planks, rollouts).</li>
+        <li>Don't neglect the obliques — side planks and twisting movements are essential.</li>
+        <li>Quality over quantity — slow, controlled reps beat fast, sloppy ones every time.</li>
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/blog.js') }}"></script>
+{% endblock %}
