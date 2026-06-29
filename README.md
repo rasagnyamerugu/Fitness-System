@@ -1,4 +1,4 @@
-#  GymTracker
+#  GymTracker https://gym-project-cipz.onrender.com/
  
 A full-stack Flask web application for tracking workouts, monitoring fitness progress, and getting AI-powered coaching — all in one place.
  
